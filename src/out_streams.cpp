@@ -1,18 +1,8 @@
 #include "out_streams.h"
+#include <iostream>
 
-// Constructors/Destructors
-//  
-
-
-void out_streams::write_file()
-{
+void out_streams::write_file(const response &res) {
+  // response will have an overloaded operator that does the formatting and
+  // error handling for us.
+  os << res;
 }
-
-void out_streams::operator<<(std::fstream& fs, out_streams& out)
-{
-// Add definition here when you actually know the format.
-}
-
-
-
-

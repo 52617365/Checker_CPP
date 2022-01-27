@@ -9,7 +9,7 @@
 
 class in_streams : filestreams {
 protected:
-	explicit in_streams(const std::string& path) : filestreams(path) {
+  explicit in_streams(const std::string &path) : filestreams(path) {
     try {
       read_file();
     } catch (const std::runtime_error &ex) {
