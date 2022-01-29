@@ -16,7 +16,6 @@ protected:
     const string error_message = "Could not open " + path + " for writing.\n";
     try {
       filestreams::handle_error(os, success_message, error_message);
-      throw ofstream::failure(error_message);
     } catch (const ofstream::failure &ex) {
       cerr << ex.what();
       // Do not bother catching because we can't function without the output
@@ -25,6 +24,6 @@ protected:
     }
   }
   ofstream os;
-  void write_file(const response &res);
+  void write_file(const response &res) { os << res; }
 };
 #endif // OUT_STREAMS_H
