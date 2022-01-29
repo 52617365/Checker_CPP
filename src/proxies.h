@@ -9,7 +9,7 @@
  * proxies.txt file inside of it because the base class ctor fills it up.
  */
 
-class proxies final : filestreams {
+class proxies final : public filestreams {
 public:
   explicit proxies(const std::string &path) : filestreams(path) {}
 };

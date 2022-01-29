@@ -1,30 +1,18 @@
-#include "main.h"
+#include "combos.h"
+#include <fstream>
+#include <iostream>
+#include <string_view>
+#include <vector>
+using namespace std;
 
-// Constructors/Destructors
-//  
+int main() {
+  const combos c("combos.txt");
+  cout << "Initialized.\n";
+  cout << c.file.size();
 
-main::main()
-{
-  initAttributes();
+  for (auto x : c.file) {
+    cout << x << '\n';
+  }
+  std::cin.get();
+  return 0;
 }
-
-main::~main()
-{
-}
-
-//  
-// Methods
-//  
-
-
-// Accessor methods
-//  
-
-
-// Other methods
-//  
-
-void main::initAttributes()
-{
-}
-

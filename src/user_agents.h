@@ -9,7 +9,7 @@
  * user_agents.txt file inside of it because the base class ctor fills it up.
  */
 
-class user_agents final : filestreams {
+class user_agents final : public filestreams {
 public:
   explicit user_agents(const std::string &path) : filestreams(path) {}
 };

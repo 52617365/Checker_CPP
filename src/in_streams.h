@@ -8,6 +8,12 @@
 #include <vector>
 
 class in_streams : filestreams {
+public:
+  // This member will hold the contents of a file. For combos, it will hold
+  // combos.txt, for proxies, it will hold proxies.txt and for user agents, it
+  // will hold user_agents.txt.
+  std::vector<std::string> file;
+
 protected:
   explicit in_streams(const std::string &path) : filestreams(path) {
     try {
@@ -16,10 +22,6 @@ protected:
       std::cerr << ex.what();
     }
   }
-  // This member will hold the contents of a file. For combos, it will hold
-  // combos.txt, for proxies, it will hold proxies.txt and for user agents, it
-  // will hold user_agents.txt.
-  std::vector<std::string_view> file;
 
   void read_file();
 };
