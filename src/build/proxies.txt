@@ -1,0 +1,3 @@
+example:proxy
+example2:proxy2
+example3:proxy3
