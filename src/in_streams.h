@@ -14,7 +14,6 @@ public:
   // combos.txt, for proxies, it will hold proxies.txt and for user agents, it
   // will hold user_agents.txt.
   std::vector<std::string> file;
-  // std::vector<std::string> file;
 
 protected:
   explicit in_streams(const std::string &path) try
