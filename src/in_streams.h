@@ -4,7 +4,6 @@
 #include "filestreams.h"
 #include <fstream>
 #include <iostream>
-#include <memory>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -18,14 +17,14 @@ public:
 protected:
   explicit in_streams(const std::string &path) try
       : filestreams(path), file{read_file()} {
-  } catch (const ifstream::failure &ex) {
+  } catch (const std::ifstream::failure &ex) {
     std::cerr << ex.what();
     throw;
   } catch (const std::bad_alloc &ex) {
     std::cerr << ex.what();
     throw;
   }
-  std::vector<std::string> read_file();
+  std::vector<std::string> read_file() const;
 };
 
 #endif // IN_STREAMS_H

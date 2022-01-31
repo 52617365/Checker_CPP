@@ -38,4 +38,5 @@ add_executable(
   unauthenticated_request.h
   user_agents.h
   valid.cpp
-  valid.h)
+  valid.h
+  httplib.h)

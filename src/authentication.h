@@ -1,13 +1,14 @@
+#ifndef AUTHENTICATION_H
+#define AUTHENTICATION_H
 #include <optional>
 #include <string_view>
-using namespace std;
-using combo = optional<pair<string, string>>;
+using combo_type = std::optional<std::pair<std::string, std::string>>;
 class authentication {
 private:
   bool auth;
-  combo auth_combo;
+  combo_type auth_combo;
   bool ask_if_authentication();
-  pair<string, string> ask_for_authentication();
+  std::pair<std::string, std::string> ask_for_authentication();
 
 public:
   authentication() : auth{ask_if_authentication()} {
@@ -16,6 +17,7 @@ public:
     }
   }
   bool auth_getter();
-  pair<string_view, string_view> combo_getter();
-  friend istream &operator>>(istream &is, authentication &auth);
+  std::pair<std::string_view, std::string_view> combo_getter();
+  friend std::istream &operator>>(std::istream &is, authentication &auth);
 };
+#endif // AUTHENTICATION_H
