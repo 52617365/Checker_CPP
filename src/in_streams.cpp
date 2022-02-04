@@ -1,9 +1,8 @@
 #include "in_streams.h"
 #include "filestreams.h"
 #include <fstream>
-
-std::vector<std::string> in_streams::read_file() const
-{
+#include <memory>
+std::vector<std::string> in_streams::read_file() const {
   try {
     std::fstream is{file_path, std::ios::in | std::ios::binary};
     is.exceptions(std::fstream::badbit);

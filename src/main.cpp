@@ -11,21 +11,24 @@
 
 int main() {
   try {
-    /*
-const combos c{"combos.txt"};
-const proxies p{"proxies.txt"};
-const user_agents ug{"user_agents.txt"};
-*/
+    const combos c{"combos.txt"};
+    const proxies p{"proxies.txt"};
+    const user_agents ug{"user_agents.txt"};
 
     unauthenticated_request r("Neekeri", "Neekeri", "Neekeri");
-    r.send_request();
-  } catch (const std::bad_alloc &ex) {
+    auto xd = r.send_request();
+    //    std::cout << xd.combo << xd.status_code;
+    std::cin.get();
+  } catch (const std::ifstream::failure &ex) {
+    std::cerr << ex.what();
     std::cin.get();
     return 1;
-  } catch (const std::ifstream::failure &ex) {
+  } catch (const std::bad_alloc &ex) {
+    std::cerr << ex.what();
     std::cin.get();
     return 1;
   } catch (const std::ofstream::failure &ex) {
+    std::cerr << ex.what();
     return 1;
   }
   return 0;
