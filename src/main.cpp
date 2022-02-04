@@ -17,7 +17,7 @@ int main() {
 
     unauthenticated_request r("Neekeri", "Neekeri", "Neekeri");
     auto xd = r.send_request();
-    //    std::cout << xd.combo << xd.status_code;
+    // std::cout << xd.combo << xd.status_code;
     std::cin.get();
   } catch (const std::ifstream::failure &ex) {
     std::cerr << ex.what();
