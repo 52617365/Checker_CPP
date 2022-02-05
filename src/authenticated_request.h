@@ -11,7 +11,8 @@ public:
       const std::string &proxy,
       std::pair<std::string, std::string> proxy_authentication)
       : payload{combo_payload, user_agent, proxy, proxy_authentication} {}
-  //  response send_request() override;
+  response send_request();
+
 private:
   payload_container payload;
 };
