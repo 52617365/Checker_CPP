@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16.3)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++2a -lssl -lcrypto")
 set(cmake_cxx_standard 23)
 #set(CMAKE_CXX_COMPILER:FILEPATH
-#    C:/Users/xdlol/winlibs-x86_64-posix-seh-gcc-11.2.0-llvm-13.0.0-mingw-w64ucrt-9.0.0-r2/mingw64/bin/clang++.exe
+#    C:/Users/xdlol/winlibs-x86et(CMAKE_CXX_COMPILER "/usr/bin/g++-9.3.0")
 #)
 project(
   Checker
