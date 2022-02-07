@@ -1,3 +1,3 @@
-C:/dev/Checker/src/build/CMakeFiles/checker.dir
-C:/dev/Checker/src/build/CMakeFiles/edit_cache.dir
-C:/dev/Checker/src/build/CMakeFiles/rebuild_cache.dir
+/home/floppa/dev/checker/src/build/CMakeFiles/rebuild_cache.dir
+/home/floppa/dev/checker/src/build/CMakeFiles/edit_cache.dir
+/home/floppa/dev/checker/src/build/CMakeFiles/checker.dir

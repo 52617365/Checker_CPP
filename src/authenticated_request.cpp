@@ -3,10 +3,10 @@
 response authenticated_request::send_request() {
   //  auto pool = httplib::ThreadPool(std::thread::hardware_concurrency());
 
-  // TODO: Add proxy authentication into here.
   httplib::Client cli("https://httpbin.org");
-  auto [host, port]{proxy_format(payload.proxy)};
-  cli.set_proxy(host, port);
+  cli.set_proxy(payload.proxy.first, payload.proxy.second);
+  cli.set_proxy_basic_auth(payload.proxy_authentication->first.c_str(),
+                           payload.proxy_authentication->second.c_str());
   httplib::Headers headers = {{"Accept-Encoding", "gzip, deflate, br"},
                               {"user-agent", payload.user_agent}};
 

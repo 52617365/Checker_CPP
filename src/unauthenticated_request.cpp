@@ -3,8 +3,7 @@
 response unauthenticated_request::send_request() {
   //  auto pool = httplib::ThreadPool(std::thread::hardware_concurrency());
   httplib::Client cli("https://httpbin.org");
-  auto [host, port]{proxy_format(payload.proxy)};
-  cli.set_proxy(host, port);
+  cli.set_proxy(payload.proxy.first, payload.proxy.second);
   httplib::Headers headers = {{"Accept-Encoding", "gzip, deflate, br"},
                               {"user-agent", payload.user_agent}};
   auto res = cli.Post("/post", payload.combo_payload,

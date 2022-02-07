@@ -4,7 +4,7 @@
 #include <string_view>
 
 struct response {
-  const int status_code = 0;
+  const int status_code;
   const std::string combo;
   friend std::ostream &operator<<(std::ostream &os, const response &res) {
     // Add output format here once you figure out the format.

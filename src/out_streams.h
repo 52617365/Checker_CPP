@@ -18,12 +18,9 @@ protected:
       handle_error(os, success_message, error_message);
     } catch (const std::ofstream::failure &ex) {
       std::cerr << ex.what();
-      // Do not bother catching because we can't function without the output
-      // file.
       throw;
     }
   }
-
   std::ofstream os;
   void write_file(const response &res) { os << res; }
 };

@@ -16,7 +16,8 @@ std::vector<std::string> in_streams::read_file() const {
     is.read(data.get(), data_size);
 
     std::vector<std::string> load_file;
-    load_file.reserve(data_size / 40);
+    // Data size / sizeof(std::string)
+    load_file.reserve(data_size / 32);
 
     size_t i = 0;
     size_t start = 0;
@@ -28,7 +29,6 @@ std::vector<std::string> in_streams::read_file() const {
         start = i + 1;
       }
     }
-    load_file.emplace_back(data.get() + start, i - start);
     return load_file;
   } catch (const std::bad_alloc &ex) {
     throw;
