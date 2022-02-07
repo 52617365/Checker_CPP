@@ -20,11 +20,11 @@ int main() {
       return 1;
     }
 
-    for (int i = 0, j = 0, k = 0; i != c.file.size(); ++i, ++j, ++k) {
-      if (j + 1 == p.file.size()) {
+    for (int i = 0, j = 0, k = 0; i < c.file.size(); ++i, ++j, ++k) {
+      if (j == p.file.size()) {
         j = 0;
       }
-      if (k + 1 == ug.file.size()) {
+      if (k == ug.file.size()) {
         k = 0;
       }
       std::cout << c.file[i] << '|' << p.file[j] << '|' << ug.file[k] << '\n';
