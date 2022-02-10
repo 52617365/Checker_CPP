@@ -7,10 +7,10 @@
 class authenticated_request {
 public:
   authenticated_request(
-      const std::string &combo_payload, const std::string &user_agent,
+      const std::string &combo, const std::string &user_agent,
       const std::string &proxy,
       std::pair<std::string, std::string> &proxy_authentication) try
-      : payload{combo_payload, user_agent, proxy, proxy_authentication} {
+      : payload{combo, user_agent, proxy, proxy_authentication}, combo{combo} {
   } catch (const std::invalid_argument &ex) {
     throw;
   } catch (const std::runtime_error &ex) {
@@ -19,6 +19,8 @@ public:
   response send_request();
 
 private:
+  // Just to store the original combo so we don't have to parse it later.
+  std::string combo;
   payload_container payload;
 };
 #endif // AUTHENTICATED_REQUEST_H

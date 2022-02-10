@@ -10,6 +10,6 @@ response unauthenticated_request::send_request() {
                       "application/x-www-form-urlencoded");
 
   std::cin.get();
-  response p(res->status, payload.combo_payload);
+  response p(res->status, combo);
   return p;
 }
