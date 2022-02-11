@@ -13,11 +13,11 @@ void filestreams::handle_error(std::fstream &fs,
   std::cout << success_message;
 }
 
-void filestreams::handle_error(std::ofstream &os,
+void filestreams::handle_error(std::ofstream &fs,
                                const std::string &success_message,
                                const std::string &error_message) {
-  os.exceptions(std::ios_base::badbit);
-  if (!os) {
+  fs.exceptions(std::ios_base::badbit);
+  if (!fs) {
     throw std::ofstream::failure(error_message);
   }
   // Here it's eof().

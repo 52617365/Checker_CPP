@@ -1,5 +1,7 @@
 #include "unauthenticated_request.h"
-response unauthenticated_request::send_request() {
+#define CPPHTTPLIB_OPENSSL_SUPPORT
+
+response unauthenticated_request::send_request() const {
   //  auto pool = httplib::ThreadPool(std::thread::hardware_concurrency());
   httplib::Client cli("https://httpbin.org");
   cli.set_proxy(payload.proxy.first, payload.proxy.second);

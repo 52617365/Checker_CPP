@@ -11,27 +11,28 @@ struct payload_container {
   const std::optional<combo_pair> proxy_authentication;
 
   // Ctor that does take in a proxy authentication
-  payload_container(const std::string &combo, const std::string &user_agent,
+  payload_container(const std::string &combo, std::string user_agent,
                     const std::string &proxy,
                     const combo_pair &authentication) try
-      : combo_payload{convert_to_payload(combo)}, user_agent{user_agent},
+      : combo_payload{convert_to_payload(combo)}, user_agent{std::move(user_agent)},
         proxy{proxy_format(proxy)}, proxy_authentication{authentication} {
     // Gets caught in request classes + threading class which then throws it
     // into main.
-  } catch (const std::invalid_argument &ex) {
+  } catch ([[maybe_unused]] const std::invalid_argument &ex) {
     throw;
-  } catch (const std::runtime_error &ex) {
+  } catch ([[maybe_unused]] const std::runtime_error &ex) {
     throw;
   }
   // Ctor that does not take in a proxy authentication
-  payload_container(const std::string &combo, const std::string &user_agent,
+  payload_container(const std::string &combo, std::string user_agent,
                     const std::string &proxy) try
       : combo_payload{convert_to_payload(combo)},
-        user_agent{user_agent}, proxy{proxy_format(proxy)} {
-  } catch (const std::runtime_error &ex) {
+        user_agent{std::move(user_agent)}, proxy{proxy_format(proxy)} {
+  } catch ([[maybe_unused]] const std::runtime_error &ex) {
     throw;
   }
-  std::string convert_to_payload(const std::string &combo);
-  std::pair<const char *, int> proxy_format(const std::string &proxy);
+
+  static std::string convert_to_payload(const std::string &combo);
+  [[nodiscard]] std::pair<const char *, int> proxy_format(const std::string &proxy) const;
 };
 #endif // PAYLOAD_CONTAINER_H

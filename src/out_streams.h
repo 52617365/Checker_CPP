@@ -1,7 +1,6 @@
 #ifndef OUT_STREAMS_H
 #define OUT_STREAMS_H
 #include "filestreams.h"
-#include "response.h"
 #include <fstream>
 #include <iostream>
 

@@ -1,4 +1,8 @@
+#ifndef THREADING_H
+#define THREADING_H
 #include "taskflow/taskflow/taskflow.hpp"
+#include <string>
+
 struct threading {
   tf::Executor executor;
   tf::Taskflow taskflow;
@@ -11,3 +15,4 @@ struct threading {
       const std::string &user_agent,
       const std::pair<std::string, std::string> &authentication);
 };
+#endif // THREADING_H
