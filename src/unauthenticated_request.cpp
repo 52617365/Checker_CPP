@@ -1,4 +1,5 @@
 #include "unauthenticated_request.h"
+<<<<<<< HEAD
 #define CPPHTTPLIB_OPENSSL_SUPPORT
 response unauthenticated_request::send_request() {
   //  auto pool = httplib::ThreadPool(std::thread::hardware_concurrency());
@@ -13,8 +14,19 @@ response unauthenticated_request::send_request() {
     auto err = res.error();
     std::cout << "Err is: " << err;
   }
+=======
+#include <charconv>
+response unauthenticated_request::send_request() {
+  //  auto pool = httplib::ThreadPool(std::thread::hardware_concurrency());
+  httplib::Client cli("https://httpbin.org");
+  cli.set_proxy(payload.proxy.first, payload.proxy.second);
+  httplib::Headers headers = {{"Accept-Encoding", "gzip, deflate, br"},
+                              {"user-agent", payload.user_agent}};
+  auto res = cli.Post("/post", payload.combo_payload,
+                      "application/x-www-form-urlencoded");
+>>>>>>> 49d970cfe41597ff3f28c3ce70544bc622b0babe
 
   std::cin.get();
-  response p;
+  response p(res->status, combo);
   return p;
 }

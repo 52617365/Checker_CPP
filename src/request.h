@@ -1,26 +1,11 @@
-#ifndef REQUEST_H
-#define REQUEST_H
-#include "httplib.h"
-#include "payload_container.h"
-#include "response.h"
+#include <string>
+#include <utility>
 class request {
-public:
-  request(const std::string_view combo_payload, const std::string_view user_agent,
-          const std::string_view proxy,
-          std::pair<std::string_view, std::string_view> proxy_authentication)
-      : payload{combo_payload, user_agent, proxy, proxy_authentication} {}
-
-  // Initialize request without proxy authentication.
-  request(const std::string_view combo_payload, const std::string_view user_agent,
-          const std::string_view proxy)
-      : payload{combo_payload, user_agent, proxy} {}
-
-  virtual response send_request() = 0;
-
 protected:
-  payload_container payload;
-  // Initialize request with proxy authentication.
-
-//  virtual ~request();
+  std::pair<const char *, int> proxy_format(const std::string &proxy) {
+    int index_of_colon = proxy.find_first_of(':');
+    auto username = proxy.substr(0, index_of_colon);
+    auto password = proxy.substr(index_of_colon);
+    return std::make_pair(username.c_str(), std::stoi(password));
+  }
 };
-#endif // REQUEST_H

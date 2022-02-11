@@ -1,4 +1,3 @@
-
 #ifndef IN_STREAMS_H
 #define IN_STREAMS_H
 #include "filestreams.h"
