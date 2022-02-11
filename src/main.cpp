@@ -1,13 +1,6 @@
-#include "combos.h"
-#include "invalid.h"
-#include "proxies.h"
 #include "unauthenticated_request.h"
-#include "user_agents.h"
-#include "valid.h"
 #include <fstream>
 #include <iostream>
-#include <string_view>
-#include <vector>
 
 int main() {
   try {
@@ -18,7 +11,7 @@ const user_agents ug{"user_agents.txt"};
 */
 
     unauthenticated_request r("Neekeri", "Neekeri", "Neekeri");
-    r.send_request();
+    auto x = r.send_request();
   } catch (const std::bad_alloc &ex) {
     std::cin.get();
     return 1;
