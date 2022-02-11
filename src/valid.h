@@ -3,7 +3,7 @@
 #include "out_streams.h"
 
 class valid : public out_streams {
-private:
+public:
   using out_streams::out_streams;
 };
 #endif // VALID_H

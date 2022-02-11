@@ -19,13 +19,10 @@ add_executable(
   authentication.cpp
   authentication.h
   combos.h
-  filestreams.cpp
   filestreams.h
   in_streams.cpp
   in_streams.h
-  invalid.cpp
   invalid.h
-  out_streams.cpp
   out_streams.h
   payload_container.cpp
   payload_container.h
@@ -36,7 +33,6 @@ add_executable(
   unauthenticated_request.cpp
   unauthenticated_request.h
   user_agents.h
-  valid.cpp
   valid.h
   payload_container.h
   payload_container.cpp

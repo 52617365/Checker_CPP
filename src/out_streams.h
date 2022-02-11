@@ -1,4 +1,3 @@
-
 #ifndef OUT_STREAMS_H
 #define OUT_STREAMS_H
 #include "filestreams.h"
@@ -7,7 +6,7 @@
 #include <iostream>
 
 class out_streams : filestreams {
-protected:
+public:
   explicit out_streams(const std::string &path)
       : filestreams(path), os{path, std::ios_base::app} {
     const std::string success_message =
@@ -22,6 +21,5 @@ protected:
     }
   }
   std::ofstream os;
-  void write_file(const response &res) { os << res; }
 };
 #endif // OUT_STREAMS_H
