@@ -16,7 +16,8 @@ public:
   } catch (const std::invalid_argument &ex) {
     throw;
   }
-  response send_request() const;
+
+  [[nodiscard]] response send_request() const;
 
 private:
   // Just to store the original combo so we don't have to parse it later.

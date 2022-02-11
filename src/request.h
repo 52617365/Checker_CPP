@@ -12,4 +12,5 @@ protected:
     return std::make_pair(username.c_str(), std::stoi(password));
   }
 };
-#endif // REQUEST_H
+
+#endif // REQUEST.H

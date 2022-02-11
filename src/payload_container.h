@@ -2,7 +2,6 @@
 #define PAYLOAD_CONTAINER_H
 #include <optional>
 #include <sstream>
-
 struct payload_container {
   using combo_pair = std::pair<std::string, std::string>;
 

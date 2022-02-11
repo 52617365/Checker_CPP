@@ -16,7 +16,6 @@ public:
   } catch (const std::runtime_error &ex) {
     throw;
   }
-
   [[nodiscard]] response send_request() const;
 
 private:

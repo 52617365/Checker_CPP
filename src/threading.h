@@ -1,8 +1,8 @@
 #ifndef THREADING_H
 #define THREADING_H
 #include <string>
-
 #include "taskflow/taskflow/taskflow.hpp"
+
 struct threading {
   tf::Executor executor;
   tf::Taskflow taskflow;

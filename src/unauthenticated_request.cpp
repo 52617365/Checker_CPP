@@ -1,5 +1,6 @@
 #include "unauthenticated_request.h"
 #define CPPHTTPLIB_OPENSSL_SUPPORT
+
 response unauthenticated_request::send_request() const
 {
   //  auto pool = httplib::ThreadPool(std::thread::hardware_concurrency());
