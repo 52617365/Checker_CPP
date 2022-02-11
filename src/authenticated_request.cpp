@@ -1,6 +1,7 @@
 #include "authenticated_request.h"
 #include "response.h"
-response authenticated_request::send_request() {
+response authenticated_request::send_request() const
+{
   //  auto pool = httplib::ThreadPool(std::thread::hardware_concurrency());
 
   httplib::Client cli("https://httpbin.org");

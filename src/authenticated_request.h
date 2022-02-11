@@ -7,16 +7,17 @@
 class authenticated_request {
 public:
   authenticated_request(
-      const std::string &combo, const std::string &user_agent,
+	  const std::string& combo, const std::string &user_agent,
       const std::string &proxy,
-      std::pair<std::string, std::string> &proxy_authentication) try
-      : payload{combo, user_agent, proxy, proxy_authentication}, combo{combo} {
+      const std::pair<std::string, std::string> &proxy_authentication) try
+      : combo{std::move(combo)}, payload{combo, user_agent, proxy, proxy_authentication} {
   } catch (const std::invalid_argument &ex) {
     throw;
   } catch (const std::runtime_error &ex) {
     throw;
   }
-  response send_request();
+
+  [[nodiscard]] response send_request() const;
 
 private:
   // Just to store the original combo so we don't have to parse it later.

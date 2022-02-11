@@ -23,7 +23,8 @@ protected:
     std::cerr << ex.what();
     throw;
   }
-  std::vector<std::string> read_file() const;
+
+  [[nodiscard]] std::vector<std::string> read_file() const;
 };
 
 #endif // IN_STREAMS_H

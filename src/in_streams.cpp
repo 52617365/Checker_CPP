@@ -12,7 +12,7 @@ std::vector<std::string> in_streams::read_file() const {
     is.seekg(0, std::ios::end);
     const std::streamsize data_size = is.tellg();
     is.seekg(0, std::ios::beg);
-    std::unique_ptr<char[]> data(new char[data_size]);
+    const std::unique_ptr<char[]> data(new char[data_size]);
     is.read(data.get(), data_size);
 
     std::vector<std::string> load_file;
@@ -30,7 +30,7 @@ std::vector<std::string> in_streams::read_file() const {
       }
     }
     return load_file;
-  } catch (const std::bad_alloc &ex) {
+  } catch ([[maybe_unused]] const std::bad_alloc &ex) {
     throw;
   }
 }
