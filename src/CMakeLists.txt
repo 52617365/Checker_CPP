@@ -39,8 +39,4 @@ add_executable(
   httplib.h
   taskflow/taskflow/taskflow.hpp)
 
-set(OPENSSL_USE_STATIC_LIBS TRUE)
-find_package(OpenSSL REQUIRED)
-target_link_libraries(checker OpenSSL::Crypto)
-
 
