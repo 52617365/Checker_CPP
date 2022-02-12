@@ -5,22 +5,35 @@ void threading::add_unauthenticated_tasks(
     const std::vector<std::string> &combo,
     const std::vector<std::string> &proxy,
     const std::vector<std::string> &user_agent) {
+
+  std::vector<payload_container> send;
   try {
-    for (int i = 0, j = 0, k = 0; i < combo.size(); ++i, ++k, ++j) {
-      if (k == user_agent.size()) {
-        k = 0;
+    for (int combo_index = 0, user_agent_index = 0, proxy_index = 0;
+         combo_index < combo.size();
+         ++combo_index, ++user_agent_index, ++proxy_index) {
+      if (user_agent_index == user_agent.size()) {
+        user_agent_index = 0;
       }
-      if (j == proxy.size()) {
-        j = 0;
+      if (proxy_index == proxy.size()) {
+        proxy_index = 0;
       }
-      // Loop through all of them, every 8 times fill 8 tasks into the thread
-      // pool and wait for them to run, the last thread being the one appending
-      // all the responses into a vector.
-      unauthenticated_request r{combo[i], user_agent[k], proxy[j]};
-      auto [A, B, C, D, F, G, H, J] = taskflow.emplace( // create eight tasks
-          [&]() { auto response = r.send_request(); }, [&]() {}, [&]() {},
-          [&]() {}, [&]() {}, [&]() {}, [&]() {}, [&]() {});
-      // ADD TASKS HERE.;
+
+      payload_container payload(
+          combo[combo_index], user_agent[user_agent_index], proxy[proxy_index]);
+      send.push_back(payload);
+      // Loop through all of them, every 8 times fill 8 tasks into the
+      // thread pool and wait for them to run, the last thread being the one
+      // appending all the responses into a vector.
+      if (send.size() == 8) {
+        unauthenticated_request r{combo[combo_index],
+                                  user_agent[user_agent_index],
+                                  proxy[proxy_index]};
+        auto [A, B, C, D, F, G, H, J] = taskflow.emplace( // create eight tasks
+            [&]() { auto response = r.send_request(); }, [&]() {}, [&]() {},
+            [&]() {}, [&]() {}, [&]() {}, [&]() {}, [&]() {});
+        // ADD TASKS HERE.;
+        send.clear();
+      }
     }
   } catch (const std::runtime_error &ex) {
     throw;
@@ -36,18 +49,18 @@ void threading::add_authenticated_tasks(
     const std::pair<std::string, std::string> &authentication) {
 
   try {
-    for (int i = 0, j = 0, k = 0; i < combo.size(); ++i, ++k, ++j) {
-      if (k == user_agent.size()) {
-        k = 0;
+    for (int combo_index = 0, user_agent_index = 0, proxy_index = 0;
+         combo_index < combo.size();
+         ++combo_index, ++user_agent_index, ++proxy_index) {
+      if (user_agent_index == user_agent.size()) {
+        user_agent_index = 0;
       }
-      if (j == proxy.size()) {
-        j = 0;
+      if (proxy_index == proxy.size()) {
+        proxy_index = 0;
       }
-      // Loop through all of them, every 8 times fill 8 tasks into the thread
-      // pool and wait for them to run, the last thread being the one appending
       // all the responses into a vector.
-      authenticated_request r{combo[i], user_agent[k], proxy[j],
-                              authentication};
+      authenticated_request r{combo[combo_index], user_agent[user_agent_index],
+                              proxy[proxy_index], authentication};
       auto [A, B, C, D, F, G, H, J] = taskflow.emplace( // create eight tasks
           [&]() { auto response = r.send_request(); }, [&]() {}, [&]() {},
           [&]() {}, [&]() {}, [&]() {}, [&]() {}, [&]() {});
