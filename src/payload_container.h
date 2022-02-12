@@ -14,8 +14,9 @@ struct payload_container {
   payload_container(const std::string &combo, std::string user_agent,
                     const std::string &proxy,
                     const combo_pair &authentication) try
-      : combo_payload{convert_to_payload(combo)}, user_agent{std::move(user_agent)},
-        proxy{proxy_format(proxy)}, proxy_authentication{authentication} {
+      : combo_payload{convert_to_payload(combo)},
+        user_agent{std::move(user_agent)}, proxy{proxy_format(proxy)},
+        proxy_authentication{authentication} {
     // Gets caught in request classes + threading class which then throws it
     // into main.
   } catch ([[maybe_unused]] const std::invalid_argument &ex) {
@@ -33,6 +34,7 @@ struct payload_container {
   }
 
   static std::string convert_to_payload(const std::string &combo);
-  [[nodiscard]] std::pair<const char *, int> proxy_format(const std::string &proxy) const;
+  [[nodiscard]] static std::pair<const char *, int>
+  proxy_format(const std::string &proxy);
 };
 #endif // PAYLOAD_CONTAINER_H

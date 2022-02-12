@@ -8,7 +8,7 @@ void threading::add_unauthenticated_task(const std::string &combo,
       unauthenticated_request r{combo, proxy, user_agent};
       // TODO: Catch return value of r.send_request and then add it to some
       // array or something else to write into file.
-      r.send_request();
+      //     r.send_request();
     });
     // TODO: Catch exception in main but don't do anything.
   } catch (const std::runtime_error &ex) {
@@ -27,7 +27,7 @@ void threading::add_authenticated_task(
       unauthenticated_request r{combo, proxy, user_agent};
       // TODO: Catch return value of r.send_request and then add it to some
       // array or something else to write into file.
-      r.send_request();
+      //    r.send_request();
     });
     // TODO: Catch exception in main but don't do anything.
   } catch (const std::runtime_error &ex) {
