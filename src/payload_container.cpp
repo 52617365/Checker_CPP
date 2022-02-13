@@ -1,12 +1,17 @@
 #include "payload_container.h"
 #include <iostream>
 std::string payload_container::convert_to_payload(const std::string &combo) {
-  if (const size_t index_of_colon{combo.find_first_of(':')}) {
-    const auto username = combo.substr(0, index_of_colon);
-    const auto password = combo.substr(index_of_colon + 1);
-    std::ostringstream payload;
-    payload << "username=" << username << "&password=" << password;
-    return payload.str();
+  try {
+    if (const size_t index_of_colon{combo.find_first_of(':')}) {
+      const auto username = combo.substr(0, index_of_colon);
+      const auto password = combo.substr(index_of_colon + 1);
+      std::ostringstream payload;
+      payload << "username=" << username << "&password=" << password;
+      return payload.str();
+    }
+    // TODO: Catch out of range exception.
+  } catch (std::out_of_range &ex) {
+    throw;
   }
   throw std::runtime_error("Combo format was invalid.\n");
 }

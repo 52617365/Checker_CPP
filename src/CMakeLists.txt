@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16.3)
 #-lssl -lcrypto
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++2a -lssl -lcrypto")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++2a -lssl -lcrypto -pthread")
 set(cmake_cxx_standard 23)
 #cmake -DOPENSSL_ROOT_DIR=/usr/local/lib/ -DOPENSSL_CRYPTO_LIBRARY=/usr/local/lib/
 
@@ -37,6 +37,6 @@ add_executable(
   payload_container.h
   payload_container.cpp
   httplib.h
-  taskflow/taskflow/taskflow.hpp)
+)
 
 

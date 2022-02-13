@@ -1,6 +1,7 @@
 #include "authenticated_request.h"
 #include "response.h"
-response authenticated_request::send_request() const {
+response authenticated_request::send_request(std::string combo,
+                                             payload_container payload) {
   //  auto pool = httplib::ThreadPool(std::thread::hardware_concurrency());
   httplib::Client cli("https://httpbin.org");
   cli.set_ca_cert_path("./ca-bundle.crt");

@@ -1,21 +1,34 @@
 #ifndef THREADING_H
 #define THREADING_H
-#include "taskflow/taskflow/taskflow.hpp"
+#include "payload_container.h"
+#include "response.h"
+#include <fstream>
+#include <future>
 #include <string>
-
+#include <vector>
 struct threading {
-  tf::Executor executor;
-  tf::Taskflow taskflow;
+  std::ofstream valid;
+  std::ofstream invalid;
+  std::vector<payload_container> payloads;
+  std::vector<std::future<response>> responses;
+  threading()
+      : valid{"valids.txt", std::ios::app}, invalid{"invalids.txt",
+                                                    std::ios::app} {
+    // reserve size to avoid reallocations, we won't need more space.
+    payloads.reserve(8);
+    responses.reserve(8);
+  }
 
   void add_unauthenticated_tasks(const std::vector<std::string> &combo,
-                                 const std::vector<std::string> &proxy,
-                                 const std::vector<std::string> &user_agent);
+                                 const std::vector<std::string> &user_agent,
+                                 const std::vector<std::string> &proxy);
   void add_authenticated_tasks(
       const std::vector<std::string> &combo,
-      const std::vector<std::string> &proxy,
       const std::vector<std::string> &user_agent,
+      const std::vector<std::string> &proxy,
       const std::pair<std::string, std::string> &authentication);
 
-  void run_tasks();
+  void run_unauthenticated_tasks();
+  void run_authenticated_tasks();
 };
 #endif // THREADING_H

@@ -15,9 +15,6 @@ int main() {
     const proxies p{"proxies.txt"};
     const user_agents ug{"user_agents.txt"};
 
-    valid write_valid{"valids.txt"};
-    invalid write_invalid{"invalids.txt"};
-
     if (c.file.empty() || p.file.empty() || ug.file.empty()) {
       std::cerr << "Some file is empty.\n";
       return 1;
@@ -33,8 +30,8 @@ int main() {
     */
     threading thread_pool;
     thread_pool.add_unauthenticated_tasks(c.file, ug.file, p.file);
-    thread_pool.run_tasks();
 
+    std::cin.get();
   } catch (const std::runtime_error &ex) {
     std::cerr << "\nThere was a problem with the formatting of your files.\n"
               << ex.what();
