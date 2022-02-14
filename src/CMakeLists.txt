@@ -28,6 +28,7 @@ add_executable(
   payload_container.h
   proxies.h
   response.h
+  response.cpp
   threading.cpp
   threading.h
   unauthenticated_request.cpp

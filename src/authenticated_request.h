@@ -6,6 +6,6 @@
 #include "response.h"
 class authenticated_request {
 public:
-  static response send_request(std::string combo, payload_container payload);
+  static response send_request(payload_container payload);
 };
 #endif // AUTHENTICATED_REQUEST_H

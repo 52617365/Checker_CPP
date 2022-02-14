@@ -11,12 +11,14 @@ struct threading {
   std::ofstream invalid;
   std::vector<payload_container> payloads;
   std::vector<std::future<response>> responses;
-  threading()
+  threading() try
       : valid{"valids.txt", std::ios::app}, invalid{"invalids.txt",
                                                     std::ios::app} {
     // reserve size to avoid reallocations, we won't need more space.
     payloads.reserve(8);
     responses.reserve(8);
+  } catch (const std::ofstream::failure &ex) {
+    throw;
   }
 
   void add_unauthenticated_tasks(const std::vector<std::string> &combo,
@@ -30,5 +32,6 @@ struct threading {
 
   void run_unauthenticated_tasks();
   void run_authenticated_tasks();
+  void write_respones();
 };
 #endif // THREADING_H

@@ -19,16 +19,8 @@ int main() {
       std::cerr << "Some file is empty.\n";
       return 1;
     }
-    /*
-    unauthenticated_request req(c.file[0], ug.file[0], p.file[0]);
-    auto req_response{req.send_request()};
-    if (req_response.status_code == 200) {
-      write_valid.os << req_response.combo;
-    } else {
-      write_invalid.os << req_response.combo;
-    }
-    */
     threading thread_pool;
+
     thread_pool.add_unauthenticated_tasks(c.file, ug.file, p.file);
 
     std::cin.get();
@@ -43,11 +35,6 @@ int main() {
   } catch (const std::exception &ex) {
     std::cerr << ex.what();
     std::cin.get();
-    // const std::ifstream::failure &ex
-    // const std::bad_alloc &ex
-    // const const std::ofstream::failure &ex
-    // There is no point in handling these because without them we can't do
-    // anything.
   }
   return 1;
 }

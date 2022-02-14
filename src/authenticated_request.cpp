@@ -1,8 +1,6 @@
 #include "authenticated_request.h"
 #include "response.h"
-response authenticated_request::send_request(std::string combo,
-                                             payload_container payload) {
-  //  auto pool = httplib::ThreadPool(std::thread::hardware_concurrency());
+response authenticated_request::send_request(payload_container payload) {
   httplib::Client cli("https://httpbin.org");
   cli.set_ca_cert_path("./ca-bundle.crt");
   cli.enable_server_certificate_verification(false);
@@ -16,6 +14,6 @@ response authenticated_request::send_request(std::string combo,
                       "application/x-www-form-urlencoded");
 
   std::cin.get();
-  response p(res->status, combo);
+  response p(res->status, payload.combo_payload);
   return p;
 }

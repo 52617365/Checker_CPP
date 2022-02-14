@@ -4,6 +4,7 @@
 #include "unauthenticated_request.h"
 #include "valid.h"
 #include <future>
+
 void threading::add_unauthenticated_tasks(
     const std::vector<std::string> &combo,
     const std::vector<std::string> &user_agent,
@@ -21,14 +22,21 @@ void threading::add_unauthenticated_tasks(
       if (proxy_index == proxy.size()) {
         proxy_index = 0;
       }
-      // Initialize a payload to be added into payloads vector.
-      payload_container payload(
-          combo[combo_index], user_agent[user_agent_index], proxy[proxy_index]);
-      payloads.push_back(payload);
-      if (payloads.size() == 8) {
+      // Initialize a payload to be added into vector containing payloads.
+      if (payloads.size() < 8) {
+        payload_container payload(combo[combo_index],
+                                  user_agent[user_agent_index],
+                                  proxy[proxy_index]);
+        payloads.push_back(payload);
+      } else {
         // Run the tasks and clear after.
         run_unauthenticated_tasks();
       }
+    }
+    // Here we might have stuff left in the payloads vector even though we ran
+    // out of combos so we check those.
+    if (!payloads.empty()) {
+      run_unauthenticated_tasks();
     }
   } catch (const std::runtime_error &ex) {
     throw;
@@ -55,15 +63,21 @@ void threading::add_authenticated_tasks(
       if (proxy_index == proxy.size()) {
         proxy_index = 0;
       }
-      payload_container payload(combo[combo_index],
-                                user_agent[user_agent_index],
-                                proxy[proxy_index], authentication);
 
-      payloads.push_back(payload);
-      if (payloads.size() == 8) {
+      if (payloads.size() < 8) {
+        payload_container payload(combo[combo_index],
+                                  user_agent[user_agent_index],
+                                  proxy[proxy_index], authentication);
+        payloads.push_back(payload);
+      } else {
         // Run the tasks and clear after.
-        run_unauthenticated_tasks();
+        run_authenticated_tasks();
       }
+    }
+    // Here we might have stuff left in the payloads vector even though we ran
+    // out of combos so we check those.
+    if (!payloads.empty()) {
+      run_authenticated_tasks();
     }
   } catch (const std::runtime_error &ex) {
     throw;
@@ -73,29 +87,45 @@ void threading::add_authenticated_tasks(
 }
 
 void threading::run_unauthenticated_tasks() {
-  std::string shell = "KAKKA";
-  payloads.clear();
   for (auto &payload : payloads) {
-    responses.emplace_back(std::async(std::launch::async,
-                                      &unauthenticated_request::send_request,
-                                      shell, payload));
-  }
-  for (auto &response : responses) {
-    std::cout << response.get().combo << '\n';
-    if (response.get().status_code == 200) {
-      valid << response.get().combo;
-    } else {
-      invalid << response.get().combo;
+    // using std::launch::async to hopefully launch the task on a new thread.
+    try {
+      responses.push_back(std::async(
+          std::launch::async, &unauthenticated_request::send_request, payload));
+    } catch (const std::system_error &ex) {
+      std::cout << "Error initializing a thread\n";
+      throw;
     }
   }
+
+  // Clear the payloads because we want fresh ones after this.
   payloads.clear();
+  write_respones();
 }
 
 void threading::run_authenticated_tasks() {
-  std::string shell = "KAKKA";
   for (auto &payload : payloads) {
-    responses.emplace_back(std::async(std::launch::async,
-                                      &authenticated_request::send_request,
-                                      shell, payload));
+    try {
+      responses.push_back(std::async(
+          std::launch::async, &authenticated_request::send_request, payload));
+    } catch (const std::system_error &ex) {
+      std::cout << "Error initializing a thread\n";
+      throw;
+    }
+  }
+  payloads.clear();
+  write_respones();
+}
+
+void threading::write_respones() {
+  for (auto &response : responses) {
+    // Awaiting response here because std::future becomes invalid after one
+    // .get() and we need it later.
+    auto await_response = response.get();
+    if (await_response.status_code == 200) {
+      valid << await_response << '\n';
+    } else {
+      invalid << await_response << '\n';
+    }
   }
 }
