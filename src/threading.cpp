@@ -96,11 +96,9 @@ void threading::run_unauthenticated_tasks() {
       std::cout << "Error initializing a thread\n";
       throw;
     }
+    payloads.clear();
+    write_respones();
   }
-
-  // Clear the payloads because we want fresh ones after this.
-  payloads.clear();
-  write_respones();
 }
 
 void threading::run_authenticated_tasks() {
@@ -112,9 +110,9 @@ void threading::run_authenticated_tasks() {
       std::cout << "Error initializing a thread\n";
       throw;
     }
+    payloads.clear();
+    write_respones();
   }
-  payloads.clear();
-  write_respones();
 }
 
 void threading::write_respones() {
@@ -122,10 +120,12 @@ void threading::write_respones() {
     // Awaiting response here because std::future becomes invalid after one
     // .get() and we need it later.
     auto await_response = response.get();
+
     if (await_response.status_code == 200) {
       valid << await_response << '\n';
     } else {
       invalid << await_response << '\n';
     }
   }
+  //  responses.clear();
 }

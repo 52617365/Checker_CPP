@@ -23,7 +23,6 @@ int main() {
 
     thread_pool.add_unauthenticated_tasks(c.file, ug.file, p.file);
 
-    std::cin.get();
   } catch (const std::runtime_error &ex) {
     std::cerr << "\nThere was a problem with the formatting of your files.\n"
               << ex.what();
