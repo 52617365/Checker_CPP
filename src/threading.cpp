@@ -130,17 +130,11 @@ void threading::run_authenticated_tasks(
 }
 
 void threading::write_respones(std::vector<std::future<response>> &futures) {
-
-  std::vector<response> responses;
-  responses.reserve(8);
-
   for (auto &future : futures) {
     // Awaiting response here because std::future becomes invalid after one
     // .get() and we need it later.
-    responses.push_back(future.get());
-  }
 
-  for (auto &response : responses) {
+    auto response = future.get();
     if (response.status_code == 200) {
       valid << response << '\n';
     } else {
