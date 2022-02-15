@@ -1,7 +1,7 @@
 #include "authenticated_request.h"
 #include "response.h"
 #include "payload_container.h"
-response authenticated_request::send_request(const payload_container payload) {
+response authenticated_request::send_request(const payload_container& payload) {
   httplib::Client cli("https://httpbin.org");
   cli.set_read_timeout(1, 0); // 1 seconds
   cli.set_ca_cert_path("./ca-bundle.crt");

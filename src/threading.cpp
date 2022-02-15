@@ -117,6 +117,7 @@ void threading::run_authenticated_tasks(
   futures.reserve(8);
   for (auto &payload : payloads) {
     try {
+
       futures.push_back(std::async(
           std::launch::async, &authenticated_request::send_request, payload));
     } catch (const std::system_error &ex) {
