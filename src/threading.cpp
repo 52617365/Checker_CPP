@@ -1,8 +1,6 @@
 #include "threading.h"
 #include "authenticated_request.h"
-#include "invalid.h"
 #include "unauthenticated_request.h"
-#include "valid.h"
 #include <future>
 
 void threading::add_unauthenticated_tasks(
