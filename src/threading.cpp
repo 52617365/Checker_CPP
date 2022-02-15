@@ -9,6 +9,9 @@ void threading::add_unauthenticated_tasks(
     const std::vector<std::string> &combo,
     const std::vector<std::string> &user_agent,
     const std::vector<std::string> &proxy) {
+
+  std::vector<payload_container> payloads;
+  payloads.reserve(8);
   try {
     for (int combo_index = 0, user_agent_index = 0, proxy_index = 0;
          combo_index < combo.size();
@@ -30,13 +33,15 @@ void threading::add_unauthenticated_tasks(
         payloads.push_back(payload);
       } else {
         // Run the tasks and clear after.
-        run_unauthenticated_tasks();
+        run_unauthenticated_tasks(payloads);
+        payloads.clear();
       }
     }
     // Here we might have stuff left in the payloads vector even though we ran
     // out of combos so we check those.
     if (!payloads.empty()) {
-      run_unauthenticated_tasks();
+      run_unauthenticated_tasks(payloads);
+      payloads.clear();
     }
   } catch (const std::runtime_error &ex) {
     throw;
@@ -51,6 +56,8 @@ void threading::add_authenticated_tasks(
     const std::vector<std::string> &proxy,
     const std::pair<std::string, std::string> &authentication) {
 
+  std::vector<payload_container> payloads;
+  payloads.reserve(8);
   try {
     for (int combo_index = 0, user_agent_index = 0, proxy_index = 0;
          combo_index < combo.size();
@@ -71,13 +78,15 @@ void threading::add_authenticated_tasks(
         payloads.push_back(payload);
       } else {
         // Run the tasks and clear after.
-        run_authenticated_tasks();
+        run_authenticated_tasks(payloads);
+        payloads.clear();
       }
     }
     // Here we might have stuff left in the payloads vector even though we ran
     // out of combos so we check those.
     if (!payloads.empty()) {
-      run_authenticated_tasks();
+      run_authenticated_tasks(payloads);
+      payloads.clear();
     }
   } catch (const std::runtime_error &ex) {
     throw;
@@ -86,46 +95,56 @@ void threading::add_authenticated_tasks(
   };
 }
 
-void threading::run_unauthenticated_tasks() {
+void threading::run_unauthenticated_tasks(
+    std::vector<payload_container> &payloads) {
   for (auto &payload : payloads) {
     // using std::launch::async to hopefully launch the task on a new thread.
+    std::vector<std::future<response>> futures;
+    futures.reserve(8);
     try {
-      responses.push_back(std::async(
+      futures.push_back(std::async(
           std::launch::async, &unauthenticated_request::send_request, payload));
     } catch (const std::system_error &ex) {
       std::cout << "Error initializing a thread\n";
       throw;
     }
-    payloads.clear();
-    write_respones();
+    write_respones(futures);
   }
 }
 
-void threading::run_authenticated_tasks() {
+void threading::run_authenticated_tasks(
+    std::vector<payload_container> &payloads) {
+
+  std::vector<std::future<response>> futures;
+  futures.reserve(8);
   for (auto &payload : payloads) {
     try {
-      responses.push_back(std::async(
+      futures.push_back(std::async(
           std::launch::async, &authenticated_request::send_request, payload));
     } catch (const std::system_error &ex) {
       std::cout << "Error initializing a thread\n";
       throw;
     }
-    payloads.clear();
-    write_respones();
+    write_respones(futures);
   }
 }
 
-void threading::write_respones() {
-  for (auto &response : responses) {
+void threading::write_respones(std::vector<std::future<response>> &futures) {
+
+  std::vector<response> responses;
+  responses.reserve(8);
+
+  for (auto &future : futures) {
     // Awaiting response here because std::future becomes invalid after one
     // .get() and we need it later.
-    auto await_response = response.get();
+    responses.push_back(future.get());
+  }
 
-    if (await_response.status_code == 200) {
-      valid << await_response << '\n';
+  for (auto &response : responses) {
+    if (response.status_code == 200) {
+      valid << response << '\n';
     } else {
-      invalid << await_response << '\n';
+      invalid << response << '\n';
     }
   }
-  //  responses.clear();
 }

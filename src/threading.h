@@ -9,14 +9,9 @@
 struct threading {
   std::ofstream valid;
   std::ofstream invalid;
-  std::vector<payload_container> payloads;
-  std::vector<std::future<response>> responses;
   threading() try
       : valid{"valids.txt", std::ios::app}, invalid{"invalids.txt",
                                                     std::ios::app} {
-    // reserve size to avoid reallocations, we won't need more space.
-    payloads.reserve(8);
-    responses.reserve(8);
   } catch (const std::ofstream::failure &ex) {
     throw;
   }
@@ -30,8 +25,8 @@ struct threading {
       const std::vector<std::string> &proxy,
       const std::pair<std::string, std::string> &authentication);
 
-  void run_unauthenticated_tasks();
-  void run_authenticated_tasks();
-  void write_respones();
+  void run_unauthenticated_tasks(std::vector<payload_container> &payloads);
+  void run_authenticated_tasks(std::vector<payload_container> &payloads);
+  void write_respones(std::vector<std::future<response>> &futures);
 };
 #endif // THREADING_H

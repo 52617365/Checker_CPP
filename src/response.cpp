@@ -1,5 +1,6 @@
 #include "response.h"
 #include <fstream>
+#include <iostream>
 #include <sstream>
 std::ostream &operator<<(std::ostream &os, const response &res) {
   // username={username}&password={password}
