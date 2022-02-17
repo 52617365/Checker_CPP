@@ -52,7 +52,7 @@ void threading::add_authenticated_tasks(
     const std::vector<std::string> &combo,
     const std::vector<std::string> &user_agent,
     const std::vector<std::string> &proxy,
-    const std::pair<std::string, std::string> &authentication) {
+    std::optional<std::pair<std::string, std::string>> &&authentication) {
 
   std::vector<payload_container> payloads;
   payloads.reserve(8);
@@ -95,10 +95,10 @@ void threading::add_authenticated_tasks(
 
 void threading::run_unauthenticated_tasks(
     std::vector<payload_container> &payloads) {
+  std::vector<std::future<response>> futures;
+  futures.reserve(8);
   for (auto &payload : payloads) {
     // using std::launch::async to hopefully launch the task on a new thread.
-    std::vector<std::future<response>> futures;
-    futures.reserve(8);
     try {
       futures.push_back(std::async(
           std::launch::async, &unauthenticated_request::send_request, payload));
@@ -106,26 +106,25 @@ void threading::run_unauthenticated_tasks(
       std::cout << "Error initializing a thread\n";
       throw;
     }
-    write_respones(futures);
   }
+  write_respones(futures);
 }
 
 void threading::run_authenticated_tasks(
     std::vector<payload_container> &payloads) {
-
   std::vector<std::future<response>> futures;
   futures.reserve(8);
   for (auto &payload : payloads) {
+    // using std::launch::async to hopefully launch the task on a new thread.
     try {
-
       futures.push_back(std::async(
           std::launch::async, &authenticated_request::send_request, payload));
     } catch (const std::system_error &ex) {
       std::cout << "Error initializing a thread\n";
       throw;
     }
-    write_respones(futures);
   }
+  write_respones(futures);
 }
 
 void threading::write_respones(std::vector<std::future<response>> &futures) {

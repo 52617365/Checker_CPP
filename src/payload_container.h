@@ -2,7 +2,6 @@
 #define PAYLOAD_CONTAINER_H
 #include <optional>
 #include <sstream>
-#include <optional>
 
 struct payload_container {
   using combo_pair = std::pair<std::string, std::string>;
@@ -15,7 +14,7 @@ struct payload_container {
   // Ctor that does take in a proxy authentication
   payload_container(const std::string &combo, std::string user_agent,
                     const std::string &proxy,
-                    const combo_pair &authentication) try
+                    std::optional<combo_pair> &authentication) try
       : combo_payload{convert_to_payload(combo)},
         user_agent{std::move(user_agent)}, proxy{proxy_format(proxy)},
         proxy_authentication{authentication} {

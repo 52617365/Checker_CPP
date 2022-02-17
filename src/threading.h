@@ -23,7 +23,7 @@ struct threading {
       const std::vector<std::string> &combo,
       const std::vector<std::string> &user_agent,
       const std::vector<std::string> &proxy,
-      const std::pair<std::string, std::string> &authentication);
+      std::optional<std::pair<std::string, std::string>> &&authentication);
 
   void run_unauthenticated_tasks(std::vector<payload_container> &payloads);
   void run_authenticated_tasks(std::vector<payload_container> &payloads);

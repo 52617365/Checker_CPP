@@ -1,3 +1,4 @@
+#include "authentication.h"
 #include "combos.h"
 #include "invalid.h"
 #include "proxies.h"
@@ -21,14 +22,20 @@ int main() {
     }
     threading thread_pool;
 
-    thread_pool.add_unauthenticated_tasks(c.file, ug.file, p.file);
-
+    authentication auth;
+    if (auth.auth_getter()) {
+      thread_pool.add_authenticated_tasks(c.file, ug.file, p.file,
+                                          auth.combo_getter());
+    } else {
+      thread_pool.add_unauthenticated_tasks(c.file, ug.file, p.file);
+    }
   } catch (const std::runtime_error &ex) {
-    std::cerr << "\nThere was a problem with the formatting of your files.\n"
+    std::cerr << "\nThere was a problem with the formatting of your files or "
+                 "combos.\n"
               << ex.what();
     std::cin.get();
   } catch (const std::invalid_argument &ex) {
-    std::cerr << "\nThere was a problem parsing your combos/proxies.\n"
+    std::cerr << "\nThere was a problem parsing your combos or proxies.\n"
               << ex.what();
     std::cin.get();
   } catch (const std::exception &ex) {

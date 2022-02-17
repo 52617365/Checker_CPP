@@ -1,5 +1,7 @@
 #ifndef AUTHENTICATION_H
 #define AUTHENTICATION_H
+#include <cstdlib>
+#include <iostream>
 #include <optional>
 #include <string_view>
 using combo_type = std::optional<std::pair<std::string, std::string>>;
@@ -13,11 +15,15 @@ private:
 public:
   authentication() : auth{ask_if_authentication()} {
     if (auth) {
-      auth_combo = ask_for_authentication();
+      try {
+        auth_combo = ask_for_authentication();
+      } catch (const std::runtime_error &ex) {
+        throw;
+      }
     }
   }
-  bool auth_getter();
-  std::pair<std::string_view, std::string_view> combo_getter();
-  friend std::istream &operator>>(std::istream &is, authentication &auth);
+  bool auth_getter() { return auth; }
+  combo_type combo_getter() { return auth_combo; };
+  std::pair<std::string, std::string> format_combo(const std::string &combo);
 };
 #endif // AUTHENTICATION_H

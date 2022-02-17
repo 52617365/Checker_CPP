@@ -6,6 +6,6 @@
 #include "response.h"
 class unauthenticated_request {
 public:
-  static response send_request(const payload_container& payload);
+  static response send_request(const payload_container &payload);
 };
 #endif // UNAUTHENTICATED_REQUEST_H

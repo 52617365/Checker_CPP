@@ -1,7 +1,7 @@
 #include "authenticated_request.h"
-#include "response.h"
 #include "payload_container.h"
-response authenticated_request::send_request(const payload_container& payload) {
+#include "response.h"
+response authenticated_request::send_request(const payload_container &payload) {
   httplib::Client cli("https://httpbin.org");
   cli.set_read_timeout(1, 0); // 1 seconds
   cli.set_ca_cert_path("./ca-bundle.crt");
@@ -12,10 +12,13 @@ response authenticated_request::send_request(const payload_container& payload) {
   httplib::Headers headers = {{"Accept-Encoding", "gzip, deflate, br"},
                               {"user-agent", payload.user_agent}};
 
-  auto res = cli.Post("/post", payload.combo_payload,
-                      "application/x-www-form-urlencoded");
+  if (auto res = cli.Post("/post", payload.combo_payload,
+                          "application/x-www-form-urlencoded")) {
 
-  std::cin.get();
-  response p(res->status, payload.combo_payload);
-  return p;
+    response p(res->status, payload.combo_payload);
+    return p;
+  } else {
+    response p(400, payload.combo_payload);
+    return p;
+  }
 }
