@@ -1,4 +1,3 @@
 # Checker_CPP
-The remake.
-
-
+A powerful and asynchronous HTTPS
+client utilizing an internal thread pool. 
